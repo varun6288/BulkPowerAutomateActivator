@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Crm.Sdk.Messages;
@@ -64,6 +65,11 @@ namespace BulkPowerAutomateActivator
             ExecuteMethod(ActivateSelectedFlows);
         }
 
+        private void btnDeactivateSelected_Click(object sender, EventArgs e)
+        {
+            ExecuteMethod(DeactivateSelectedFlows);
+        }
+
         private void LoadSolutions()
         {
             AppendLog("Loading solutions...");
@@ -92,7 +98,7 @@ namespace BulkPowerAutomateActivator
                 {
                     if (args.Error != null)
                     {
-                        AppendLog("Error loading solutions: " + args.Error.Message);
+                        AppendLog("Error loading solutions: " + args.Error.Message, Color.Red);
                         MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -188,7 +194,7 @@ namespace BulkPowerAutomateActivator
                 {
                     if (args.Error != null)
                     {
-                        AppendLog("Error loading flows: " + args.Error.Message);
+                        AppendLog("Error loading flows: " + args.Error.Message, Color.Red);
                         MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
@@ -262,13 +268,13 @@ namespace BulkPowerAutomateActivator
                             Service.Execute(request);
                             succeeded++;
                             worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
-                                $"Activated: {flow.Value}");
+                                $"OK|Activated: {flow.Value}");
                         }
                         catch (Exception ex)
                         {
                             failed++;
                             worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
-                                $"FAILED to activate '{flow.Value}': {ex.Message}");
+                                $"ERR|FAILED to activate '{flow.Value}': {ex.Message}");
                         }
                     }
 
@@ -276,10 +282,10 @@ namespace BulkPowerAutomateActivator
                 },
                 ProgressChanged = (args) =>
                 {
-                    var message = args.UserState as string;
-                    if (message != null)
+                    var raw = args.UserState as string;
+                    if (raw != null)
                     {
-                        AppendLog(message);
+                        ParseAndLog(raw);
                     }
 
                     var progress = (int)((double)(args.ProgressPercentage) / 100 * selectedFlows.Count);
@@ -294,29 +300,145 @@ namespace BulkPowerAutomateActivator
 
                     if (args.Error != null)
                     {
-                        AppendLog("Unexpected error: " + args.Error.Message);
+                        AppendLog("Unexpected error: " + args.Error.Message, Color.Red);
                         MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
                     var counts = (int[])args.Result;
-                    AppendLog($"Activation complete. Succeeded: {counts[0]}, Failed: {counts[1]}");
+                    var summaryColor = counts[1] > 0 ? Color.Orange : Color.LimeGreen;
+                    AppendLog($"Activation complete. Succeeded: {counts[0]}, Failed: {counts[1]}", summaryColor);
 
-                    // Refresh the flows list to show updated states
                     LoadFlows();
                 }
             });
         }
 
-        private void AppendLog(string message)
+        private void DeactivateSelectedFlows()
         {
-            if (rtbLog.InvokeRequired)
+            var selectedFlows = new List<KeyValuePair<Guid, string>>();
+
+            foreach (DataGridViewRow row in dgvFlows.Rows)
             {
-                rtbLog.Invoke(new Action(() => AppendLog(message)));
+                var isChecked = row.Cells["colSelect"].Value as bool?;
+                if (isChecked == true && row.Tag is Guid flowId)
+                {
+                    var flowName = row.Cells["colFlowName"].Value?.ToString() ?? "(unnamed)";
+                    selectedFlows.Add(new KeyValuePair<Guid, string>(flowId, flowName));
+                }
+            }
+
+            if (selectedFlows.Count == 0)
+            {
+                MessageBox.Show("Please select at least one flow to deactivate.", "No Flows Selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            rtbLog.AppendText($"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}");
+            AppendLog($"Deactivating {selectedFlows.Count} flow(s)...");
+            progressBar.Minimum = 0;
+            progressBar.Maximum = selectedFlows.Count;
+            progressBar.Value = 0;
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Deactivating flows...",
+                Work = (worker, args) =>
+                {
+                    int succeeded = 0;
+                    int failed = 0;
+
+                    for (int i = 0; i < selectedFlows.Count; i++)
+                    {
+                        var flow = selectedFlows[i];
+                        try
+                        {
+                            var request = new SetStateRequest
+                            {
+                                EntityMoniker = new EntityReference("workflow", flow.Key),
+                                State = new OptionSetValue(0),  // Draft
+                                Status = new OptionSetValue(1)  // Draft
+                            };
+
+                            Service.Execute(request);
+                            succeeded++;
+                            worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
+                                $"OK|Deactivated: {flow.Value}");
+                        }
+                        catch (Exception ex)
+                        {
+                            failed++;
+                            worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
+                                $"ERR|FAILED to deactivate '{flow.Value}': {ex.Message}");
+                        }
+                    }
+
+                    args.Result = new int[] { succeeded, failed };
+                },
+                ProgressChanged = (args) =>
+                {
+                    var raw = args.UserState as string;
+                    if (raw != null)
+                    {
+                        ParseAndLog(raw);
+                    }
+
+                    var progress = (int)((double)(args.ProgressPercentage) / 100 * selectedFlows.Count);
+                    if (progress <= progressBar.Maximum)
+                    {
+                        progressBar.Value = progress;
+                    }
+                },
+                PostWorkCallBack = (args) =>
+                {
+                    progressBar.Value = progressBar.Maximum;
+
+                    if (args.Error != null)
+                    {
+                        AppendLog("Unexpected error: " + args.Error.Message, Color.Red);
+                        MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    var counts = (int[])args.Result;
+                    var summaryColor = counts[1] > 0 ? Color.Orange : Color.LimeGreen;
+                    AppendLog($"Deactivation complete. Succeeded: {counts[0]}, Failed: {counts[1]}", summaryColor);
+
+                    LoadFlows();
+                }
+            });
+        }
+
+        private void ParseAndLog(string raw)
+        {
+            if (raw.StartsWith("ERR|"))
+            {
+                AppendLog(raw.Substring(4), Color.Red);
+            }
+            else if (raw.StartsWith("OK|"))
+            {
+                AppendLog(raw.Substring(3));
+            }
+            else
+            {
+                AppendLog(raw);
+            }
+        }
+
+        private void AppendLog(string message, Color? color = null)
+        {
+            if (rtbLog.InvokeRequired)
+            {
+                rtbLog.Invoke(new Action(() => AppendLog(message, color)));
+                return;
+            }
+
+            var text = $"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}";
+            rtbLog.SelectionStart = rtbLog.TextLength;
+            rtbLog.SelectionLength = 0;
+            rtbLog.SelectionColor = color ?? Color.LimeGreen;
+            rtbLog.AppendText(text);
+            rtbLog.SelectionColor = Color.LimeGreen;
             rtbLog.ScrollToCaret();
         }
     }
