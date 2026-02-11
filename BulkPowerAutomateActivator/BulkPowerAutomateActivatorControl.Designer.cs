@@ -30,6 +30,7 @@ namespace BulkPowerAutomateActivator
             this.colModifiedOn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelActions = new System.Windows.Forms.Panel();
             this.btnActivateSelected = new System.Windows.Forms.Button();
+            this.btnDeactivateSelected = new System.Windows.Forms.Button();
             this.btnDeselectAll = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
@@ -150,6 +151,7 @@ namespace BulkPowerAutomateActivator
             this.colModifiedOn.ReadOnly = true;
 
             // panelActions
+            this.panelActions.Controls.Add(this.btnDeactivateSelected);
             this.panelActions.Controls.Add(this.btnActivateSelected);
             this.panelActions.Controls.Add(this.btnDeselectAll);
             this.panelActions.Controls.Add(this.btnSelectAll);
@@ -185,6 +187,15 @@ namespace BulkPowerAutomateActivator
             this.btnActivateSelected.Text = "Activate Selected";
             this.btnActivateSelected.UseVisualStyleBackColor = true;
             this.btnActivateSelected.Click += new System.EventHandler(this.btnActivateSelected_Click);
+
+            // btnDeactivateSelected
+            this.btnDeactivateSelected.Location = new System.Drawing.Point(340, 5);
+            this.btnDeactivateSelected.Name = "btnDeactivateSelected";
+            this.btnDeactivateSelected.Size = new System.Drawing.Size(140, 25);
+            this.btnDeactivateSelected.TabIndex = 3;
+            this.btnDeactivateSelected.Text = "Deactivate Selected";
+            this.btnDeactivateSelected.UseVisualStyleBackColor = true;
+            this.btnDeactivateSelected.Click += new System.EventHandler(this.btnDeactivateSelected_Click);
 
             // progressBar
             this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -236,6 +247,7 @@ namespace BulkPowerAutomateActivator
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnDeselectAll;
         private System.Windows.Forms.Button btnActivateSelected;
+        private System.Windows.Forms.Button btnDeactivateSelected;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.RichTextBox rtbLog;
     }
