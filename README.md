@@ -24,3 +24,36 @@ REQUIREMENTS:
 
 SUPPORT:
 For issues, feature requests, or contributions, visit: [https://github.com/varun6288/BulkPowerAutomateActivator]
+================================================================================================================================
+
+I'm developing an XrmToolBox plugin called "BulkPowerAutomateActivator" for 
+Dynamics 365/Power Platform.
+
+PROJECT DETAILS:
+- Plugin Name: BulkPowerAutomateActivator
+- Purpose: Bulk activate Power Automate flows (Cloud Flows) from Dynamics 365 solutions
+- Framework: .NET Framework 4.6.2 or later
+- IDE: Visual Studio
+
+KEY REQUIREMENTS:
+1. Inherit from XrmToolBox PluginControlBase
+2. Connect to Dynamics 365 using IOrganizationService
+3. Retrieve solutions from the environment
+4. Get Power Automate flows from selected solution (workflows with category=5)
+5. Bulk activate selected flows using SetStateRequest
+6. Show progress and results to user
+
+NUGET PACKAGES NEEDED:
+- XrmToolBox.Extensibility
+- Microsoft.CrmSdk.CoreAssemblies
+- Microsoft.CrmSdk.XrmTooling.CoreAssembly
+
+MAIN FUNCTIONALITY:
+- Solution dropdown/selector
+- DataGridView showing flows with checkboxes
+- Activate Selected button
+- Progress bar for bulk operations
+- Status/log panel for results
+
+Please help me build this plugin step by step, starting with project setup 
+and structure.
