@@ -1,0 +1,242 @@
+namespace BulkPowerAutomateActivator
+{
+    partial class BulkPowerAutomateActivatorControl
+    {
+        private System.ComponentModel.IContainer components = null;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Component Designer generated code
+
+        private void InitializeComponent()
+        {
+            this.tableLayoutMain = new System.Windows.Forms.TableLayoutPanel();
+            this.panelToolbar = new System.Windows.Forms.Panel();
+            this.btnLoadFlows = new System.Windows.Forms.Button();
+            this.cmbSolutions = new System.Windows.Forms.ComboBox();
+            this.lblSolution = new System.Windows.Forms.Label();
+            this.btnLoadSolutions = new System.Windows.Forms.Button();
+            this.dgvFlows = new System.Windows.Forms.DataGridView();
+            this.colSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colFlowName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colModifiedOn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.panelActions = new System.Windows.Forms.Panel();
+            this.btnActivateSelected = new System.Windows.Forms.Button();
+            this.btnDeselectAll = new System.Windows.Forms.Button();
+            this.btnSelectAll = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.rtbLog = new System.Windows.Forms.RichTextBox();
+
+            this.tableLayoutMain.SuspendLayout();
+            this.panelToolbar.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).BeginInit();
+            this.panelActions.SuspendLayout();
+            this.SuspendLayout();
+
+            // tableLayoutMain
+            this.tableLayoutMain.ColumnCount = 1;
+            this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutMain.Controls.Add(this.panelToolbar, 0, 0);
+            this.tableLayoutMain.Controls.Add(this.dgvFlows, 0, 1);
+            this.tableLayoutMain.Controls.Add(this.panelActions, 0, 2);
+            this.tableLayoutMain.Controls.Add(this.progressBar, 0, 3);
+            this.tableLayoutMain.Controls.Add(this.rtbLog, 0, 4);
+            this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutMain.Name = "tableLayoutMain";
+            this.tableLayoutMain.RowCount = 5;
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.tableLayoutMain.Size = new System.Drawing.Size(800, 600);
+            this.tableLayoutMain.TabIndex = 0;
+
+            // panelToolbar
+            this.panelToolbar.Controls.Add(this.btnLoadFlows);
+            this.panelToolbar.Controls.Add(this.cmbSolutions);
+            this.panelToolbar.Controls.Add(this.lblSolution);
+            this.panelToolbar.Controls.Add(this.btnLoadSolutions);
+            this.panelToolbar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelToolbar.Location = new System.Drawing.Point(3, 3);
+            this.panelToolbar.Name = "panelToolbar";
+            this.panelToolbar.Size = new System.Drawing.Size(794, 34);
+            this.panelToolbar.TabIndex = 0;
+
+            // btnLoadSolutions
+            this.btnLoadSolutions.Location = new System.Drawing.Point(3, 5);
+            this.btnLoadSolutions.Name = "btnLoadSolutions";
+            this.btnLoadSolutions.Size = new System.Drawing.Size(110, 25);
+            this.btnLoadSolutions.TabIndex = 0;
+            this.btnLoadSolutions.Text = "Load Solutions";
+            this.btnLoadSolutions.UseVisualStyleBackColor = true;
+            this.btnLoadSolutions.Click += new System.EventHandler(this.btnLoadSolutions_Click);
+
+            // lblSolution
+            this.lblSolution.AutoSize = true;
+            this.lblSolution.Location = new System.Drawing.Point(120, 10);
+            this.lblSolution.Name = "lblSolution";
+            this.lblSolution.Size = new System.Drawing.Size(51, 13);
+            this.lblSolution.TabIndex = 1;
+            this.lblSolution.Text = "Solution:";
+
+            // cmbSolutions
+            this.cmbSolutions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSolutions.FormattingEnabled = true;
+            this.cmbSolutions.Location = new System.Drawing.Point(175, 7);
+            this.cmbSolutions.Name = "cmbSolutions";
+            this.cmbSolutions.Size = new System.Drawing.Size(350, 21);
+            this.cmbSolutions.TabIndex = 2;
+
+            // btnLoadFlows
+            this.btnLoadFlows.Location = new System.Drawing.Point(535, 5);
+            this.btnLoadFlows.Name = "btnLoadFlows";
+            this.btnLoadFlows.Size = new System.Drawing.Size(110, 25);
+            this.btnLoadFlows.TabIndex = 3;
+            this.btnLoadFlows.Text = "Load Flows";
+            this.btnLoadFlows.UseVisualStyleBackColor = true;
+            this.btnLoadFlows.Click += new System.EventHandler(this.btnLoadFlows_Click);
+
+            // dgvFlows
+            this.dgvFlows.AllowUserToAddRows = false;
+            this.dgvFlows.AllowUserToDeleteRows = false;
+            this.dgvFlows.AllowUserToResizeRows = false;
+            this.dgvFlows.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dgvFlows.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFlows.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+                this.colSelect,
+                this.colFlowName,
+                this.colState,
+                this.colModifiedOn
+            });
+            this.dgvFlows.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvFlows.Location = new System.Drawing.Point(3, 43);
+            this.dgvFlows.Name = "dgvFlows";
+            this.dgvFlows.RowHeadersVisible = false;
+            this.dgvFlows.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvFlows.Size = new System.Drawing.Size(794, 288);
+            this.dgvFlows.TabIndex = 1;
+
+            // colSelect
+            this.colSelect.FillWeight = 30F;
+            this.colSelect.HeaderText = "Select";
+            this.colSelect.Name = "colSelect";
+
+            // colFlowName
+            this.colFlowName.FillWeight = 200F;
+            this.colFlowName.HeaderText = "Flow Name";
+            this.colFlowName.Name = "colFlowName";
+            this.colFlowName.ReadOnly = true;
+
+            // colState
+            this.colState.FillWeight = 80F;
+            this.colState.HeaderText = "State";
+            this.colState.Name = "colState";
+            this.colState.ReadOnly = true;
+
+            // colModifiedOn
+            this.colModifiedOn.FillWeight = 100F;
+            this.colModifiedOn.HeaderText = "Modified On";
+            this.colModifiedOn.Name = "colModifiedOn";
+            this.colModifiedOn.ReadOnly = true;
+
+            // panelActions
+            this.panelActions.Controls.Add(this.btnActivateSelected);
+            this.panelActions.Controls.Add(this.btnDeselectAll);
+            this.panelActions.Controls.Add(this.btnSelectAll);
+            this.panelActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelActions.Location = new System.Drawing.Point(3, 337);
+            this.panelActions.Name = "panelActions";
+            this.panelActions.Size = new System.Drawing.Size(794, 34);
+            this.panelActions.TabIndex = 2;
+
+            // btnSelectAll
+            this.btnSelectAll.Location = new System.Drawing.Point(3, 5);
+            this.btnSelectAll.Name = "btnSelectAll";
+            this.btnSelectAll.Size = new System.Drawing.Size(90, 25);
+            this.btnSelectAll.TabIndex = 0;
+            this.btnSelectAll.Text = "Select All";
+            this.btnSelectAll.UseVisualStyleBackColor = true;
+            this.btnSelectAll.Click += new System.EventHandler(this.btnSelectAll_Click);
+
+            // btnDeselectAll
+            this.btnDeselectAll.Location = new System.Drawing.Point(100, 5);
+            this.btnDeselectAll.Name = "btnDeselectAll";
+            this.btnDeselectAll.Size = new System.Drawing.Size(90, 25);
+            this.btnDeselectAll.TabIndex = 1;
+            this.btnDeselectAll.Text = "Deselect All";
+            this.btnDeselectAll.UseVisualStyleBackColor = true;
+            this.btnDeselectAll.Click += new System.EventHandler(this.btnDeselectAll_Click);
+
+            // btnActivateSelected
+            this.btnActivateSelected.Location = new System.Drawing.Point(200, 5);
+            this.btnActivateSelected.Name = "btnActivateSelected";
+            this.btnActivateSelected.Size = new System.Drawing.Size(130, 25);
+            this.btnActivateSelected.TabIndex = 2;
+            this.btnActivateSelected.Text = "Activate Selected";
+            this.btnActivateSelected.UseVisualStyleBackColor = true;
+            this.btnActivateSelected.Click += new System.EventHandler(this.btnActivateSelected_Click);
+
+            // progressBar
+            this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.progressBar.Location = new System.Drawing.Point(3, 377);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(794, 24);
+            this.progressBar.TabIndex = 3;
+
+            // rtbLog
+            this.rtbLog.BackColor = System.Drawing.Color.FromArgb(30, 30, 30);
+            this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLog.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbLog.ForeColor = System.Drawing.Color.LimeGreen;
+            this.rtbLog.Location = new System.Drawing.Point(3, 407);
+            this.rtbLog.Name = "rtbLog";
+            this.rtbLog.ReadOnly = true;
+            this.rtbLog.Size = new System.Drawing.Size(794, 190);
+            this.rtbLog.TabIndex = 4;
+            this.rtbLog.Text = "";
+
+            // BulkPowerAutomateActivatorControl
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.tableLayoutMain);
+            this.Name = "BulkPowerAutomateActivatorControl";
+            this.Size = new System.Drawing.Size(800, 600);
+            this.tableLayoutMain.ResumeLayout(false);
+            this.panelToolbar.ResumeLayout(false);
+            this.panelToolbar.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).EndInit();
+            this.panelActions.ResumeLayout(false);
+            this.ResumeLayout(false);
+        }
+
+        #endregion
+
+        private System.Windows.Forms.TableLayoutPanel tableLayoutMain;
+        private System.Windows.Forms.Panel panelToolbar;
+        private System.Windows.Forms.Button btnLoadSolutions;
+        private System.Windows.Forms.Label lblSolution;
+        private System.Windows.Forms.ComboBox cmbSolutions;
+        private System.Windows.Forms.Button btnLoadFlows;
+        private System.Windows.Forms.DataGridView dgvFlows;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colSelect;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colFlowName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colState;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colModifiedOn;
+        private System.Windows.Forms.Panel panelActions;
+        private System.Windows.Forms.Button btnSelectAll;
+        private System.Windows.Forms.Button btnDeselectAll;
+        private System.Windows.Forms.Button btnActivateSelected;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.RichTextBox rtbLog;
+    }
+}
