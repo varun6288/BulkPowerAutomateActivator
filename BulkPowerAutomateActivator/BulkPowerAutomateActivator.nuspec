@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>XrmToolBox plugin that lets you bulk activate, deactivate, or reassign ownership of Power Automate cloud flows within Dynamics 365 solutions. Easily select a solution, review all included flows, and apply changes to multiple flows at once with real‑time status updates.</description>
     <summary>Bulk activate or deactivate Power Automate cloud flows from Dynamics 365 solutions.</summary>
-    <releaseNotes>Initial release - Bulk activate/deactivate Power Automate flows, filter by state, track progress with real-time status updates.</releaseNotes>
+    <releaseNotes>Initial release - Bulk activate/deactivate, assign Power Automate flows, filter by state, track progress with real-time status updates.</releaseNotes>
     <copyright>Copyright 2026 Varun Singh</copyright>
     <tags>XrmToolBox Power Automate Dynamics 365 Dataverse Cloud Flows Bulk Activate Deactivate Plugin</tags>
     <dependencies>

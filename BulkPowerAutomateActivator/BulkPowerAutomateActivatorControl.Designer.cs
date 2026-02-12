@@ -27,12 +27,19 @@ namespace BulkPowerAutomateActivator
             this.colSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colFlowName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colOwner = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colModifiedOn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.panelActions = new System.Windows.Forms.Panel();
             this.btnActivateSelected = new System.Windows.Forms.Button();
             this.btnDeactivateSelected = new System.Windows.Forms.Button();
             this.btnDeselectAll = new System.Windows.Forms.Button();
             this.btnSelectAll = new System.Windows.Forms.Button();
+            this.panelChangeOwner = new System.Windows.Forms.Panel();
+            this.lblNewOwner = new System.Windows.Forms.Label();
+            this.txtSearchUser = new System.Windows.Forms.TextBox();
+            this.btnSearchUsers = new System.Windows.Forms.Button();
+            this.cmbUsers = new System.Windows.Forms.ComboBox();
+            this.btnChangeOwner = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
 
@@ -40,6 +47,7 @@ namespace BulkPowerAutomateActivator
             this.panelToolbar.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).BeginInit();
             this.panelActions.SuspendLayout();
+            this.panelChangeOwner.SuspendLayout();
             this.SuspendLayout();
 
             // tableLayoutMain
@@ -48,15 +56,17 @@ namespace BulkPowerAutomateActivator
             this.tableLayoutMain.Controls.Add(this.panelToolbar, 0, 0);
             this.tableLayoutMain.Controls.Add(this.dgvFlows, 0, 1);
             this.tableLayoutMain.Controls.Add(this.panelActions, 0, 2);
-            this.tableLayoutMain.Controls.Add(this.progressBar, 0, 3);
-            this.tableLayoutMain.Controls.Add(this.rtbLog, 0, 4);
+            this.tableLayoutMain.Controls.Add(this.panelChangeOwner, 0, 3);
+            this.tableLayoutMain.Controls.Add(this.progressBar, 0, 4);
+            this.tableLayoutMain.Controls.Add(this.rtbLog, 0, 5);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutMain.Name = "tableLayoutMain";
-            this.tableLayoutMain.RowCount = 5;
+            this.tableLayoutMain.RowCount = 6;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
             this.tableLayoutMain.Size = new System.Drawing.Size(800, 600);
@@ -117,6 +127,7 @@ namespace BulkPowerAutomateActivator
                 this.colSelect,
                 this.colFlowName,
                 this.colState,
+                this.colOwner,
                 this.colModifiedOn
             });
             this.dgvFlows.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -133,7 +144,7 @@ namespace BulkPowerAutomateActivator
             this.colSelect.Name = "colSelect";
 
             // colFlowName
-            this.colFlowName.FillWeight = 200F;
+            this.colFlowName.FillWeight = 150F;
             this.colFlowName.HeaderText = "Flow Name";
             this.colFlowName.Name = "colFlowName";
             this.colFlowName.ReadOnly = true;
@@ -143,6 +154,12 @@ namespace BulkPowerAutomateActivator
             this.colState.HeaderText = "State";
             this.colState.Name = "colState";
             this.colState.ReadOnly = true;
+
+            // colOwner
+            this.colOwner.FillWeight = 120F;
+            this.colOwner.HeaderText = "Owner";
+            this.colOwner.Name = "colOwner";
+            this.colOwner.ReadOnly = true;
 
             // colModifiedOn
             this.colModifiedOn.FillWeight = 100F;
@@ -197,6 +214,56 @@ namespace BulkPowerAutomateActivator
             this.btnDeactivateSelected.UseVisualStyleBackColor = true;
             this.btnDeactivateSelected.Click += new System.EventHandler(this.btnDeactivateSelected_Click);
 
+            // panelChangeOwner
+            this.panelChangeOwner.Controls.Add(this.btnChangeOwner);
+            this.panelChangeOwner.Controls.Add(this.cmbUsers);
+            this.panelChangeOwner.Controls.Add(this.btnSearchUsers);
+            this.panelChangeOwner.Controls.Add(this.txtSearchUser);
+            this.panelChangeOwner.Controls.Add(this.lblNewOwner);
+            this.panelChangeOwner.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelChangeOwner.Name = "panelChangeOwner";
+            this.panelChangeOwner.TabIndex = 5;
+
+            // lblNewOwner
+            this.lblNewOwner.AutoSize = true;
+            this.lblNewOwner.Location = new System.Drawing.Point(3, 10);
+            this.lblNewOwner.Name = "lblNewOwner";
+            this.lblNewOwner.Size = new System.Drawing.Size(66, 13);
+            this.lblNewOwner.TabIndex = 0;
+            this.lblNewOwner.Text = "New Owner:";
+
+            // txtSearchUser
+            this.txtSearchUser.Location = new System.Drawing.Point(75, 7);
+            this.txtSearchUser.Name = "txtSearchUser";
+            this.txtSearchUser.Size = new System.Drawing.Size(180, 20);
+            this.txtSearchUser.TabIndex = 1;
+
+            // btnSearchUsers
+            this.btnSearchUsers.Location = new System.Drawing.Point(262, 5);
+            this.btnSearchUsers.Name = "btnSearchUsers";
+            this.btnSearchUsers.Size = new System.Drawing.Size(100, 25);
+            this.btnSearchUsers.TabIndex = 2;
+            this.btnSearchUsers.Text = "Search Users";
+            this.btnSearchUsers.UseVisualStyleBackColor = true;
+            this.btnSearchUsers.Click += new System.EventHandler(this.btnSearchUsers_Click);
+
+            // cmbUsers
+            this.cmbUsers.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbUsers.FormattingEnabled = true;
+            this.cmbUsers.Location = new System.Drawing.Point(370, 7);
+            this.cmbUsers.Name = "cmbUsers";
+            this.cmbUsers.Size = new System.Drawing.Size(250, 21);
+            this.cmbUsers.TabIndex = 3;
+
+            // btnChangeOwner
+            this.btnChangeOwner.Location = new System.Drawing.Point(628, 5);
+            this.btnChangeOwner.Name = "btnChangeOwner";
+            this.btnChangeOwner.Size = new System.Drawing.Size(110, 25);
+            this.btnChangeOwner.TabIndex = 4;
+            this.btnChangeOwner.Text = "Change Owner";
+            this.btnChangeOwner.UseVisualStyleBackColor = true;
+            this.btnChangeOwner.Click += new System.EventHandler(this.btnChangeOwner_Click);
+
             // progressBar
             this.progressBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.progressBar.Location = new System.Drawing.Point(3, 377);
@@ -227,6 +294,8 @@ namespace BulkPowerAutomateActivator
             this.panelToolbar.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).EndInit();
             this.panelActions.ResumeLayout(false);
+            this.panelChangeOwner.ResumeLayout(false);
+            this.panelChangeOwner.PerformLayout();
             this.ResumeLayout(false);
         }
 
@@ -242,12 +311,19 @@ namespace BulkPowerAutomateActivator
         private System.Windows.Forms.DataGridViewCheckBoxColumn colSelect;
         private System.Windows.Forms.DataGridViewTextBoxColumn colFlowName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colState;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOwner;
         private System.Windows.Forms.DataGridViewTextBoxColumn colModifiedOn;
         private System.Windows.Forms.Panel panelActions;
         private System.Windows.Forms.Button btnSelectAll;
         private System.Windows.Forms.Button btnDeselectAll;
         private System.Windows.Forms.Button btnActivateSelected;
         private System.Windows.Forms.Button btnDeactivateSelected;
+        private System.Windows.Forms.Panel panelChangeOwner;
+        private System.Windows.Forms.Label lblNewOwner;
+        private System.Windows.Forms.TextBox txtSearchUser;
+        private System.Windows.Forms.Button btnSearchUsers;
+        private System.Windows.Forms.ComboBox cmbUsers;
+        private System.Windows.Forms.Button btnChangeOwner;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.RichTextBox rtbLog;
     }

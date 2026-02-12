@@ -23,6 +23,9 @@ namespace BulkPowerAutomateActivator
             cmbSolutions.Items.Clear();
             cmbSolutions.Tag = null;
             dgvFlows.Rows.Clear();
+            cmbUsers.Items.Clear();
+            cmbUsers.Tag = null;
+            txtSearchUser.Text = "";
             rtbLog.Clear();
             progressBar.Value = 0;
             AppendLog("Connection updated. Use 'Load Solutions' to begin.");
@@ -176,7 +179,7 @@ namespace BulkPowerAutomateActivator
                     // Step 2: Query workflow entity for cloud flows (category=5)
                     var flowQuery = new QueryExpression("workflow")
                     {
-                        ColumnSet = new ColumnSet("workflowid", "name", "statecode", "statuscode", "modifiedon", "category"),
+                        ColumnSet = new ColumnSet("workflowid", "name", "statecode", "statuscode", "modifiedon", "category", "ownerid"),
                         Criteria = new FilterExpression
                         {
                             Conditions =
@@ -209,8 +212,10 @@ namespace BulkPowerAutomateActivator
                         var stateLabel = state != null && state.Value == 1 ? "Active" : "Draft";
                         var modifiedOn = entity.GetAttributeValue<DateTime?>("modifiedon");
                         var modifiedStr = modifiedOn.HasValue ? modifiedOn.Value.ToLocalTime().ToString("g") : "";
+                        var ownerRef = entity.GetAttributeValue<EntityReference>("ownerid");
+                        var ownerName = ownerRef != null ? ownerRef.Name ?? "" : "";
 
-                        var rowIndex = dgvFlows.Rows.Add(false, name, stateLabel, modifiedStr);
+                        var rowIndex = dgvFlows.Rows.Add(false, name, stateLabel, ownerName, modifiedStr);
                         dgvFlows.Rows[rowIndex].Tag = entity.Id;
                     }
 
@@ -403,6 +408,211 @@ namespace BulkPowerAutomateActivator
                     var counts = (int[])args.Result;
                     var summaryColor = counts[1] > 0 ? Color.Orange : Color.LimeGreen;
                     AppendLog($"Deactivation complete. Succeeded: {counts[0]}, Failed: {counts[1]}", summaryColor);
+
+                    LoadFlows();
+                }
+            });
+        }
+
+        private void btnSearchUsers_Click(object sender, EventArgs e)
+        {
+            ExecuteMethod(SearchUsers);
+        }
+
+        private void btnChangeOwner_Click(object sender, EventArgs e)
+        {
+            ExecuteMethod(ChangeOwnerOfSelectedFlows);
+        }
+
+        private void SearchUsers()
+        {
+            var searchText = txtSearchUser.Text.Trim();
+            if (searchText.Length < 2)
+            {
+                MessageBox.Show("Please enter at least 2 characters to search.", "Search Text Too Short",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AppendLog($"Searching users matching '{searchText}'...");
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Searching users...",
+                Work = (worker, args) =>
+                {
+                    var query = new QueryExpression("systemuser")
+                    {
+                        ColumnSet = new ColumnSet("systemuserid", "fullname", "domainname", "applicationid"),
+                        Criteria = new FilterExpression(LogicalOperator.And)
+                        {
+                            Conditions =
+                            {
+                                new ConditionExpression("isdisabled", ConditionOperator.Equal, false)
+                            },
+                            Filters =
+                            {
+                                new FilterExpression(LogicalOperator.Or)
+                                {
+                                    Conditions =
+                                    {
+                                        new ConditionExpression("fullname", ConditionOperator.Like, $"%{searchText}%"),
+                                        new ConditionExpression("domainname", ConditionOperator.Like, $"%{searchText}%")
+                                    }
+                                }
+                            }
+                        },
+                        Orders = { new OrderExpression("fullname", OrderType.Ascending) }
+                    };
+
+                    args.Result = Service.RetrieveMultiple(query);
+                },
+                PostWorkCallBack = (args) =>
+                {
+                    if (args.Error != null)
+                    {
+                        AppendLog("Error searching users: " + args.Error.Message, Color.Red);
+                        MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    var results = (EntityCollection)args.Result;
+                    cmbUsers.Items.Clear();
+                    var userMap = new Dictionary<string, Guid>();
+
+                    foreach (var entity in results.Entities)
+                    {
+                        var fullname = entity.GetAttributeValue<string>("fullname") ?? "";
+                        var domainname = entity.GetAttributeValue<string>("domainname") ?? "";
+                        var applicationId = entity.GetAttributeValue<Guid?>("applicationid");
+
+                        string display;
+                        if (applicationId.HasValue && applicationId.Value != Guid.Empty)
+                        {
+                            display = $"{fullname} [App User]";
+                        }
+                        else
+                        {
+                            display = $"{fullname} ({domainname})";
+                        }
+
+                        cmbUsers.Items.Add(display);
+                        userMap[display] = entity.Id;
+                    }
+
+                    cmbUsers.Tag = userMap;
+                    AppendLog($"Found {results.Entities.Count} user(s).");
+
+                    if (cmbUsers.Items.Count > 0)
+                    {
+                        cmbUsers.SelectedIndex = 0;
+                    }
+                }
+            });
+        }
+
+        private void ChangeOwnerOfSelectedFlows()
+        {
+            var userMap = cmbUsers.Tag as Dictionary<string, Guid>;
+            if (userMap == null || cmbUsers.SelectedItem == null)
+            {
+                MessageBox.Show("Please search and select a user first.", "No User Selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var selectedUserKey = cmbUsers.SelectedItem.ToString();
+            if (!userMap.ContainsKey(selectedUserKey))
+                return;
+
+            var selectedUserId = userMap[selectedUserKey];
+
+            var selectedFlows = new List<KeyValuePair<Guid, string>>();
+
+            foreach (DataGridViewRow row in dgvFlows.Rows)
+            {
+                var isChecked = row.Cells["colSelect"].Value as bool?;
+                if (isChecked == true && row.Tag is Guid flowId)
+                {
+                    var flowName = row.Cells["colFlowName"].Value?.ToString() ?? "(unnamed)";
+                    selectedFlows.Add(new KeyValuePair<Guid, string>(flowId, flowName));
+                }
+            }
+
+            if (selectedFlows.Count == 0)
+            {
+                MessageBox.Show("Please select at least one flow to change owner.", "No Flows Selected",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            AppendLog($"Changing owner of {selectedFlows.Count} flow(s) to '{selectedUserKey}'...");
+            progressBar.Minimum = 0;
+            progressBar.Maximum = selectedFlows.Count;
+            progressBar.Value = 0;
+
+            WorkAsync(new WorkAsyncInfo
+            {
+                Message = "Changing owner of flows...",
+                Work = (worker, args) =>
+                {
+                    int succeeded = 0;
+                    int failed = 0;
+
+                    for (int i = 0; i < selectedFlows.Count; i++)
+                    {
+                        var flow = selectedFlows[i];
+                        try
+                        {
+                            var request = new AssignRequest
+                            {
+                                Assignee = new EntityReference("systemuser", selectedUserId),
+                                Target = new EntityReference("workflow", flow.Key)
+                            };
+
+                            Service.Execute(request);
+                            succeeded++;
+                            worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
+                                $"OK|Changed owner: {flow.Value}");
+                        }
+                        catch (Exception ex)
+                        {
+                            failed++;
+                            worker.ReportProgress((i + 1) * 100 / selectedFlows.Count,
+                                $"ERR|FAILED to change owner of '{flow.Value}': {ex.Message}");
+                        }
+                    }
+
+                    args.Result = new int[] { succeeded, failed };
+                },
+                ProgressChanged = (args) =>
+                {
+                    var raw = args.UserState as string;
+                    if (raw != null)
+                    {
+                        ParseAndLog(raw);
+                    }
+
+                    var progress = (int)((double)(args.ProgressPercentage) / 100 * selectedFlows.Count);
+                    if (progress <= progressBar.Maximum)
+                    {
+                        progressBar.Value = progress;
+                    }
+                },
+                PostWorkCallBack = (args) =>
+                {
+                    progressBar.Value = progressBar.Maximum;
+
+                    if (args.Error != null)
+                    {
+                        AppendLog("Unexpected error: " + args.Error.Message, Color.Red);
+                        MessageBox.Show(args.Error.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+
+                    var counts = (int[])args.Result;
+                    var summaryColor = counts[1] > 0 ? Color.Orange : Color.LimeGreen;
+                    AppendLog($"Change owner complete. Succeeded: {counts[0]}, Failed: {counts[1]}", summaryColor);
 
                     LoadFlows();
                 }
