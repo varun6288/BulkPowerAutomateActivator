@@ -2,9 +2,9 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("BulkPowerAutomateActivator")]
-[assembly: AssemblyDescription("XrmToolBox plugin to bulk activate Power Automate cloud flows from Dynamics 365 solutions")]
+[assembly: AssemblyDescription("XrmToolBox plugin to bulk activate, deactivate, or change owner of Power Automate cloud flows from Dynamics 365 solutions")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Varun Singh")]
 [assembly: AssemblyProduct("BulkPowerAutomateActivator")]
 [assembly: AssemblyCopyright("Copyright © 2025")]
 [assembly: AssemblyTrademark("")]
