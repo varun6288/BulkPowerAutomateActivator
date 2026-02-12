@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BulkPowerAutomateActivator</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <title>Bulk Power Automate Activator</title>
     <authors>Varun Singh</authors>
     <owners>Varun Singh</owners>
@@ -13,7 +13,7 @@
     <summary>Bulk activate or deactivate Power Automate cloud flows from Dynamics 365 solutions.</summary>
     <releaseNotes>Initial release - Bulk activate/deactivate, assign Power Automate flows, filter by state, track progress with real-time status updates.</releaseNotes>
     <copyright>Copyright 2026 Varun Singh</copyright>
-    <tags>XrmToolBox Power Automate Dynamics 365 Dataverse Cloud Flows Bulk Activate Deactivate Plugin</tags>
+    <tags>XrmToolBox Plugins</tags>
     <icon>images\icon.png</icon>
     <readme>docs\README.md</readme>
     <dependencies>
