@@ -24,3 +24,4 @@ REQUIREMENTS:
 
 SUPPORT:
 For issues, feature requests, or contributions, visit: [https://github.com/varun6288/BulkPowerAutomateActivator]
+You can also contact me on LinkedIn: [https://www.linkedin.com/in/varun-singh-5bb35234/]
