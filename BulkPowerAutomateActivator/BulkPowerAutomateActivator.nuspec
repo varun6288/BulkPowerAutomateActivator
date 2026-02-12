@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>BulkPowerAutomateActivator</id>
+    <version>1.0.0</version>
+    <title>Bulk Power Automate Activator</title>
+    <authors>Varun Singh</authors>
+    <owners>Varun Singh</owners>
+    <projectUrl>https://github.com/varun6288/BulkPowerAutomateActivator</projectUrl>
+    <license type="expression">MIT</license>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>XrmToolBox plugin that lets you bulk activate, deactivate, or reassign ownership of Power Automate cloud flows within Dynamics 365 solutions. Easily select a solution, review all included flows, and apply changes to multiple flows at once with real‑time status updates.</description>
+    <summary>Bulk activate or deactivate Power Automate cloud flows from Dynamics 365 solutions.</summary>
+    <releaseNotes>Initial release - Bulk activate/deactivate Power Automate flows, filter by state, track progress with real-time status updates.</releaseNotes>
+    <copyright>Copyright 2026 Varun Singh</copyright>
+    <tags>XrmToolBox Power Automate Dynamics 365 Dataverse Cloud Flows Bulk Activate Deactivate Plugin</tags>
+    <dependencies>
+      <dependency id="XrmToolBoxPackage" version="1.2023.7.65" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\BulkPowerAutomateActivator.dll" target="lib\net462\Plugins" />
+  </files>
+</package>
