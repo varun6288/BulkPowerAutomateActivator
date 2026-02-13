@@ -2,6 +2,11 @@
 
 All notable changes to BulkPowerAutomateActivator will be documented in this file.
 
+## [1.0.5] - 2026-02-13
+- Fixed NuGet dependency ID from XrmToolBoxPackage to XrmToolBox for Plugin Store visibility
+- Fixed DLL target path in NuGet package
+- Synchronized assembly version with NuGet package version
+
 ## [1.0.3] - 2026-02-12
 - Added package icon (V logo) to NuGet package
 

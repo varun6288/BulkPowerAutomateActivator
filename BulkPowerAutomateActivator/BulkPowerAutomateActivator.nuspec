@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BulkPowerAutomateActivator</id>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <title>Bulk Power Automate Activator</title>
     <authors>Varun Singh</authors>
     <owners>Varun Singh</owners>
@@ -17,11 +17,11 @@
     <icon>images\icon.png</icon>
     <readme>docs\README.md</readme>
     <dependencies>
-      <dependency id="XrmToolBoxPackage" version="1.2023.7.65" />
+      <dependency id="XrmToolBox" version="1.2023.7.65" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\BulkPowerAutomateActivator.dll" target="lib\net462\Plugins" />
+    <file src="bin\Release\BulkPowerAutomateActivator.dll" target="lib\net462" />
     <file src="..\README.md" target="docs\README.md" />
     <file src="icon.png" target="images\icon.png" />
   </files>
