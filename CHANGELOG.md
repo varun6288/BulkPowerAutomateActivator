@@ -9,6 +9,7 @@ All notable changes to BulkPowerAutomateActivator will be documented in this fil
 
 ## [1.0.3] - 2026-02-12
 - Added package icon (V logo) to NuGet package
+- Change owner of power automate in bulk.
 
 ## [1.0.2] - 2026-02-12
 - Updated README with LinkedIn contact information
