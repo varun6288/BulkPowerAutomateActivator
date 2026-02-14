@@ -2,26 +2,27 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BulkPowerAutomateActivator</id>
-    <version>1.0.5</version>
+    <version>1.0.7</version>
     <title>Bulk Power Automate Activator</title>
     <authors>Varun Singh</authors>
     <owners>Varun Singh</owners>
     <projectUrl>https://github.com/varun6288/BulkPowerAutomateActivator</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/varun6288/BulkPowerAutomateActivator/main/BulkPowerAutomateActivator/icon.png</iconUrl>
+    <icon>images\icon.png</icon>
     <license type="expression">MIT</license>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>XrmToolBox plugin that lets you bulk activate, deactivate, or reassign ownership of Power Automate cloud flows within Dynamics 365 solutions. Easily select a solution, review all included flows, and apply changes to multiple flows at once with real‑time status updates.</description>
+    <description>XrmToolBox plugin that lets you bulk activate, deactivate, or reassign ownership of Power Automate cloud flows within Dynamics 365 solutions. Easily select a solution, review all included flows, and apply changes to multiple flows at once with real-time status updates.</description>
     <summary>Bulk activate or deactivate Power Automate cloud flows from Dynamics 365 solutions.</summary>
-    <releaseNotes>Initial release - Bulk activate/deactivate, assign Power Automate flows, filter by state, track progress with real-time status updates.</releaseNotes>
+    <releaseNotes>Fixed NuGet package structure for XrmToolBox Tool Library compatibility.</releaseNotes>
     <copyright>Copyright 2026 Varun Singh</copyright>
-    <tags>XrmToolBox Plugins</tags>
-    <icon>images\icon.png</icon>
+    <tags>XrmToolBox Plugin BulkPowerAutomateActivator PowerAutomate Flow</tags>
     <readme>docs\README.md</readme>
     <dependencies>
       <dependency id="XrmToolBox" version="1.2023.7.65" />
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\BulkPowerAutomateActivator.dll" target="lib\net462" />
+    <file src="bin\Release\BulkPowerAutomateActivator.dll" target="lib\net462\Plugins" />
     <file src="..\README.md" target="docs\README.md" />
     <file src="icon.png" target="images\icon.png" />
   </files>
