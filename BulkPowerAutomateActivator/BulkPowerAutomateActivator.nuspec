@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>BulkPowerAutomateActivator</id>
-    <version>1.0.8</version>
+    <version>1.0.9</version>
     <title>Bulk Power Automate Activator</title>
     <authors>Varun Singh</authors>
     <owners>Varun Singh</owners>
@@ -13,7 +13,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>XrmToolBox plugin that lets you bulk activate, deactivate, or reassign ownership of Power Automate cloud flows within Dynamics 365 solutions. Easily select a solution, review all included flows, and apply changes to multiple flows at once with real-time status updates.</description>
     <summary>Bulk activate or deactivate Power Automate cloud flows from Dynamics 365 solutions.</summary>
-    <releaseNotes>Fixed NuGet package structure for XrmToolBox Tool Library compatibility.</releaseNotes>
+    <releaseNotes>Updated BigImageBase64 to 80x80 resolution for XrmToolBox.</releaseNotes>
     <copyright>Copyright 2026 Varun Singh</copyright>
     <tags>XrmToolBox Plugin BulkPowerAutomateActivator PowerAutomate Flow</tags>
     <readme>docs\README.md</readme>
