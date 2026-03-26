@@ -12,17 +12,29 @@ namespace BulkPowerAutomateActivator
 {
     public partial class BulkPowerAutomateActivatorControl : PluginControlBase
     {
+        private List<string> _allSolutionItems = new List<string>();
+        private bool _isSolutionFiltering = false;
+
         public BulkPowerAutomateActivatorControl()
         {
             InitializeComponent();
             ConnectionUpdated += OnConnectionUpdated;
+            cmbSolutions.TextChanged += cmbSolutions_TextChanged;
+            cmbStateFilter.SelectedIndex = 0; // "All"
+            txtFlowSearch.TextChanged += txtFlowSearch_TextChanged;
+            cmbStateFilter.SelectedIndexChanged += cmbStateFilter_SelectedIndexChanged;
         }
 
         private void OnConnectionUpdated(object sender, EventArgs e)
         {
             cmbSolutions.Items.Clear();
+            cmbSolutions.Text = "";
             cmbSolutions.Tag = null;
+            _allSolutionItems.Clear();
             dgvFlows.Rows.Clear();
+            txtFlowSearch.Text = "";
+            cmbStateFilter.SelectedIndex = 0;
+            lblFlowCount.Text = "";
             cmbUsers.Items.Clear();
             cmbUsers.Tag = null;
             txtSearchUser.Text = "";
@@ -108,6 +120,7 @@ namespace BulkPowerAutomateActivator
 
                     var results = (EntityCollection)args.Result;
                     cmbSolutions.Items.Clear();
+                    _allSolutionItems.Clear();
 
                     var solutionMap = new Dictionary<string, Guid>();
 
@@ -117,6 +130,7 @@ namespace BulkPowerAutomateActivator
                         var uniqueName = entity.GetAttributeValue<string>("uniquename");
                         var version = entity.GetAttributeValue<string>("version");
                         var display = $"{name} ({uniqueName}) v{version}";
+                        _allSolutionItems.Add(display);
                         cmbSolutions.Items.Add(display);
                         solutionMap[display] = entity.Id;
                     }
@@ -124,10 +138,12 @@ namespace BulkPowerAutomateActivator
                     cmbSolutions.Tag = solutionMap;
                     AppendLog($"Loaded {results.Entities.Count} solutions.");
 
+                    _isSolutionFiltering = true;
                     if (cmbSolutions.Items.Count > 0)
                     {
                         cmbSolutions.SelectedIndex = 0;
                     }
+                    _isSolutionFiltering = false;
                 }
             });
         }
@@ -220,6 +236,13 @@ namespace BulkPowerAutomateActivator
                     }
 
                     AppendLog($"Found {results.Entities.Count} cloud flow(s) in the selected solution.");
+
+                    // Reset filters and update count
+                    txtFlowSearch.Text = "";
+                    cmbStateFilter.SelectedIndex = 0;
+                    lblFlowCount.Text = results.Entities.Count > 0
+                        ? $"Showing {results.Entities.Count} of {results.Entities.Count} flows"
+                        : "";
                 }
             });
         }
@@ -617,6 +640,82 @@ namespace BulkPowerAutomateActivator
                     LoadFlows();
                 }
             });
+        }
+
+        private void cmbSolutions_TextChanged(object sender, EventArgs e)
+        {
+            if (_isSolutionFiltering) return;
+            _isSolutionFiltering = true;
+
+            try
+            {
+                var searchText = cmbSolutions.Text;
+                var cursorPos = cmbSolutions.SelectionStart;
+
+                cmbSolutions.BeginUpdate();
+                cmbSolutions.Items.Clear();
+
+                if (string.IsNullOrEmpty(searchText))
+                {
+                    cmbSolutions.Items.AddRange(_allSolutionItems.ToArray());
+                }
+                else
+                {
+                    var filtered = _allSolutionItems
+                        .Where(s => s.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                        .ToArray();
+                    cmbSolutions.Items.AddRange(filtered);
+                }
+
+                cmbSolutions.EndUpdate();
+                cmbSolutions.DroppedDown = true;
+                cmbSolutions.Text = searchText;
+                cmbSolutions.SelectionStart = cursorPos;
+                cmbSolutions.SelectionLength = 0;
+                Cursor.Current = Cursors.Default;
+            }
+            finally
+            {
+                _isSolutionFiltering = false;
+            }
+        }
+
+        private void txtFlowSearch_TextChanged(object sender, EventArgs e)
+        {
+            ApplyFlowFilters();
+        }
+
+        private void cmbStateFilter_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyFlowFilters();
+        }
+
+        private void ApplyFlowFilters()
+        {
+            var searchText = txtFlowSearch.Text.Trim();
+            var stateFilter = cmbStateFilter.SelectedItem?.ToString() ?? "All";
+
+            int visibleCount = 0;
+            int totalCount = dgvFlows.Rows.Count;
+
+            foreach (DataGridViewRow row in dgvFlows.Rows)
+            {
+                var flowName = row.Cells["colFlowName"].Value?.ToString() ?? "";
+                var flowState = row.Cells["colState"].Value?.ToString() ?? "";
+
+                bool matchesName = string.IsNullOrEmpty(searchText) ||
+                    flowName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0;
+
+                bool matchesState = stateFilter == "All" ||
+                    string.Equals(flowState, stateFilter, StringComparison.OrdinalIgnoreCase);
+
+                row.Visible = matchesName && matchesState;
+                if (row.Visible) visibleCount++;
+            }
+
+            lblFlowCount.Text = totalCount > 0
+                ? $"Showing {visibleCount} of {totalCount} flows"
+                : "";
         }
 
         private void ParseAndLog(string raw)

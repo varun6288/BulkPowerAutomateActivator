@@ -9,8 +9,11 @@ KEY FEATURES:
 - Track activation progress with real-time status updates
 - Change owner of power automate in bulk. [Use case when we restore a Dataverse environment and all the flows are owned by the user who created them. This feature will allow us to change the owner of all the flows in bulk to a service account or another user.]
 - View detailed results and error messages for each flow
-- Filter Power Automate flows by activation state (active/inactive)
-- Reducing manual repetitive tasks during solution management or Dataverse envrionment restore.
+- Type-ahead search to quickly find solutions — no need to scroll through hundreds of solutions
+- Filter Power Automate flows by name with instant search as you type
+- Filter Power Automate flows by activation state (Active/Draft)
+- Live flow count showing filtered vs total flows (e.g. "Showing 5 of 42 flows")
+- Reducing manual repetitive tasks during solution management or Dataverse environment restore.
 - ALM scenarios requiring quick Power Automate flows activation
 
 WHY USE THIS TOOL:

@@ -23,6 +23,12 @@ namespace BulkPowerAutomateActivator
             this.cmbSolutions = new System.Windows.Forms.ComboBox();
             this.lblSolution = new System.Windows.Forms.Label();
             this.btnLoadSolutions = new System.Windows.Forms.Button();
+            this.panelFlowFilter = new System.Windows.Forms.Panel();
+            this.lblFlowFilter = new System.Windows.Forms.Label();
+            this.txtFlowSearch = new System.Windows.Forms.TextBox();
+            this.lblStateFilter = new System.Windows.Forms.Label();
+            this.cmbStateFilter = new System.Windows.Forms.ComboBox();
+            this.lblFlowCount = new System.Windows.Forms.Label();
             this.dgvFlows = new System.Windows.Forms.DataGridView();
             this.colSelect = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colFlowName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +51,7 @@ namespace BulkPowerAutomateActivator
 
             this.tableLayoutMain.SuspendLayout();
             this.panelToolbar.SuspendLayout();
+            this.panelFlowFilter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).BeginInit();
             this.panelActions.SuspendLayout();
             this.panelChangeOwner.SuspendLayout();
@@ -54,16 +61,18 @@ namespace BulkPowerAutomateActivator
             this.tableLayoutMain.ColumnCount = 1;
             this.tableLayoutMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutMain.Controls.Add(this.panelToolbar, 0, 0);
-            this.tableLayoutMain.Controls.Add(this.dgvFlows, 0, 1);
-            this.tableLayoutMain.Controls.Add(this.panelActions, 0, 2);
-            this.tableLayoutMain.Controls.Add(this.panelChangeOwner, 0, 3);
-            this.tableLayoutMain.Controls.Add(this.progressBar, 0, 4);
-            this.tableLayoutMain.Controls.Add(this.rtbLog, 0, 5);
+            this.tableLayoutMain.Controls.Add(this.panelFlowFilter, 0, 1);
+            this.tableLayoutMain.Controls.Add(this.dgvFlows, 0, 2);
+            this.tableLayoutMain.Controls.Add(this.panelActions, 0, 3);
+            this.tableLayoutMain.Controls.Add(this.panelChangeOwner, 0, 4);
+            this.tableLayoutMain.Controls.Add(this.progressBar, 0, 5);
+            this.tableLayoutMain.Controls.Add(this.rtbLog, 0, 6);
             this.tableLayoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutMain.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutMain.Name = "tableLayoutMain";
-            this.tableLayoutMain.RowCount = 6;
+            this.tableLayoutMain.RowCount = 7;
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
@@ -101,7 +110,8 @@ namespace BulkPowerAutomateActivator
             this.lblSolution.Text = "Solution:";
 
             // cmbSolutions
-            this.cmbSolutions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSolutions.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+            this.cmbSolutions.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.cmbSolutions.FormattingEnabled = true;
             this.cmbSolutions.Location = new System.Drawing.Point(175, 7);
             this.cmbSolutions.Name = "cmbSolutions";
@@ -116,6 +126,55 @@ namespace BulkPowerAutomateActivator
             this.btnLoadFlows.Text = "Load Flows";
             this.btnLoadFlows.UseVisualStyleBackColor = true;
             this.btnLoadFlows.Click += new System.EventHandler(this.btnLoadFlows_Click);
+
+            // panelFlowFilter
+            this.panelFlowFilter.Controls.Add(this.lblFlowCount);
+            this.panelFlowFilter.Controls.Add(this.cmbStateFilter);
+            this.panelFlowFilter.Controls.Add(this.lblStateFilter);
+            this.panelFlowFilter.Controls.Add(this.txtFlowSearch);
+            this.panelFlowFilter.Controls.Add(this.lblFlowFilter);
+            this.panelFlowFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelFlowFilter.Name = "panelFlowFilter";
+            this.panelFlowFilter.TabIndex = 6;
+
+            // lblFlowFilter
+            this.lblFlowFilter.AutoSize = true;
+            this.lblFlowFilter.Location = new System.Drawing.Point(3, 7);
+            this.lblFlowFilter.Name = "lblFlowFilter";
+            this.lblFlowFilter.Size = new System.Drawing.Size(62, 13);
+            this.lblFlowFilter.TabIndex = 0;
+            this.lblFlowFilter.Text = "Flow Filter:";
+
+            // txtFlowSearch
+            this.txtFlowSearch.Location = new System.Drawing.Point(72, 4);
+            this.txtFlowSearch.Name = "txtFlowSearch";
+            this.txtFlowSearch.Size = new System.Drawing.Size(250, 20);
+            this.txtFlowSearch.TabIndex = 1;
+
+            // lblStateFilter
+            this.lblStateFilter.AutoSize = true;
+            this.lblStateFilter.Location = new System.Drawing.Point(335, 7);
+            this.lblStateFilter.Name = "lblStateFilter";
+            this.lblStateFilter.Size = new System.Drawing.Size(35, 13);
+            this.lblStateFilter.TabIndex = 2;
+            this.lblStateFilter.Text = "State:";
+
+            // cmbStateFilter
+            this.cmbStateFilter.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbStateFilter.FormattingEnabled = true;
+            this.cmbStateFilter.Items.AddRange(new object[] { "All", "Active", "Draft" });
+            this.cmbStateFilter.Location = new System.Drawing.Point(375, 4);
+            this.cmbStateFilter.Name = "cmbStateFilter";
+            this.cmbStateFilter.Size = new System.Drawing.Size(100, 21);
+            this.cmbStateFilter.TabIndex = 3;
+
+            // lblFlowCount
+            this.lblFlowCount.AutoSize = true;
+            this.lblFlowCount.Location = new System.Drawing.Point(490, 7);
+            this.lblFlowCount.Name = "lblFlowCount";
+            this.lblFlowCount.Size = new System.Drawing.Size(0, 13);
+            this.lblFlowCount.TabIndex = 4;
+            this.lblFlowCount.ForeColor = System.Drawing.Color.Gray;
 
             // dgvFlows
             this.dgvFlows.AllowUserToAddRows = false;
@@ -292,6 +351,8 @@ namespace BulkPowerAutomateActivator
             this.tableLayoutMain.ResumeLayout(false);
             this.panelToolbar.ResumeLayout(false);
             this.panelToolbar.PerformLayout();
+            this.panelFlowFilter.ResumeLayout(false);
+            this.panelFlowFilter.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFlows)).EndInit();
             this.panelActions.ResumeLayout(false);
             this.panelChangeOwner.ResumeLayout(false);
@@ -326,5 +387,11 @@ namespace BulkPowerAutomateActivator
         private System.Windows.Forms.Button btnChangeOwner;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.RichTextBox rtbLog;
+        private System.Windows.Forms.Panel panelFlowFilter;
+        private System.Windows.Forms.Label lblFlowFilter;
+        private System.Windows.Forms.TextBox txtFlowSearch;
+        private System.Windows.Forms.Label lblStateFilter;
+        private System.Windows.Forms.ComboBox cmbStateFilter;
+        private System.Windows.Forms.Label lblFlowCount;
     }
 }
